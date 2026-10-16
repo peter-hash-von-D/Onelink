@@ -1,0 +1,51 @@
+ 
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>OneNote öffnen</title>
+</head>
+<body>
+  <h2>OneNote-Verknüpfung</h2>
+ 
+  <p id="status">Link wird geprüft ...</p>
+ 
+  <button id="open" hidden>
+    In OneNote öffnen
+  </button>
+ 
+  <script>
+    const status = document.getElementById("status");
+    const button = document.getElementById("open");
+ 
+    try {
+      // OneNote-Link aus der Adresse lesen
+      const target = decodeURIComponent(
+        window.location.hash.substring(1)
+      );
+ 
+      // Ausschließlich OneNote-Links erlauben
+      const protocol = new URL(target).protocol.toLowerCase();
+ 
+      if (protocol !== "onenote:") {
+        throw new Error("Ungültiges Protokoll");
+      }
+ 
+      status.textContent = "OneNote-Link ist bereit.";
+      button.hidden = false;
+ 
+      // OneNote nach einem Klick öffnen
+      button.addEventListener("click", () => {
+        window.location.href = target;
+      });
+ 
+    } catch {
+      status.textContent =
+        "Kein gültiger OneNote-Link übergeben.";
+    }
+  </script>
+</body>
+</html>
